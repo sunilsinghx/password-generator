@@ -10,29 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Checkout code
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # Step 2: Set up Node.js (use Node.js version 18, or the version you're working with)
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18'
 
+    # Step 3: Install dependencies
     - name: Install dependencies
       run: |
         npm install
 
+    # Step 4: Build the app (this will generate the build files in `dist` or equivalent)
     - name: Build the app
       run: |
         npm run build
 
+    # Step 5: Configure Git user for deployment (required for git commits)
     - name: Set up Git user for deployment
       run: |
         git config user.name "Sunil Singh"
         git config user.email "sunilsingh09012@gmail.com"
 
+    # Step 6: Deploy to GitHub Pages (automate the push to gh-pages branch)
     - name: Deploy to GitHub Pages
       run: |
-        npm run deploy
+        GIT_ASKPASS=echo npm run deploy  # Skip username/password prompt by echoing token
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the automatically provided GitHub token for authentication
