@@ -1,0 +1,48 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Replace with the branch you are deploying from
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'  # Adjust the Node.js version if needed
+
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: |
+        npm install
+
+    # Step 4: Build the app (this generates the dist folder or equivalent)
+    - name: Build the app
+      run: |
+        npm run build
+
+    # Step 5: Configure Git user identity
+    - name: Configure Git user identity
+      run: |
+        git config  user.name "Sunil Singh"  # Set your name
+        git config  user.email "sunilsingh09012@gmail.com"  # Set your email
+
+    # Step 6: Set up SSH for GitHub Actions (using the private key stored in secrets)
+    - name: Set up SSH for GitHub Actions
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Add your SSH private key to secrets
+
+    # Step 7: Deploy to GitHub Pages using `gh-pages`
+    - name: Deploy to GitHub Pages
+      run: |
+        npm run deploy
