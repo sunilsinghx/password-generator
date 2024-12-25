@@ -14,7 +14,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Step 2: Set up Node.js (use Node.js version 18, or the version you're working with)
+    # Step 2: Set up Node.js
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
@@ -25,20 +25,20 @@ jobs:
       run: |
         npm install
 
-    # Step 4: Build the app (this will generate the build files in `dist` or equivalent)
+    # Step 4: Build the app (generate dist folder or equivalent)
     - name: Build the app
       run: |
         npm run build
 
-    # Step 5: Configure Git user for deployment (required for git commits)
+    # Step 5: Configure Git user (for commit)
     - name: Set up Git user for deployment
       run: |
-        git config user.name "Sunil Singh"
-        git config user.email "sunilsingh09012@gmail.com"
+        git config --global user.name "Sunil Singh"
+        git config --global user.email "sunilsingh09012@gmail.com"
 
-    # Step 6: Deploy to GitHub Pages (automate the push to gh-pages branch)
+    # Step 6: Deploy to GitHub Pages using `gh-pages` package
     - name: Deploy to GitHub Pages
       run: |
-        GIT_ASKPASS=echo npm run deploy  # Skip username/password prompt by echoing token
+        GIT_ASKPASS=echo npm run deploy  # Prevent Git from asking for a password
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the automatically provided GitHub token for authentication
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Automatically provided GitHub token for authentication
