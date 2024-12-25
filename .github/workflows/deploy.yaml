@@ -25,20 +25,18 @@ jobs:
       run: |
         npm install
 
-    # Step 4: Build the app (generate dist folder or equivalent)
+    # Step 4: Build the app
     - name: Build the app
       run: |
         npm run build
 
-    # Step 5: Configure Git user (for commit)
-    - name: Set up Git user for deployment
-      run: |
-        git config --global user.name "Sunil Singh"
-        git config --global user.email "sunilsingh09012@gmail.com"
+    # Step 5: Set up SSH for GitHub Actions (using the private key stored in secrets)
+    - name: Set up SSH for GitHub Actions
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Add your SSH private key to secrets
 
-    # Step 6: Deploy to GitHub Pages using `gh-pages` package
+    # Step 6: Deploy to GitHub Pages using `gh-pages`
     - name: Deploy to GitHub Pages
       run: |
-        GIT_ASKPASS=echo npm run deploy  # Prevent Git from asking for a password
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Automatically provided GitHub token for authentication
+        npm run deploy
