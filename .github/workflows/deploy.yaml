@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -25,6 +25,11 @@ jobs:
     - name: Build the app
       run: |
         npm run build
+
+    - name: Set up Git user for deployment
+      run: |
+        git config user.name "Sunil Singh"
+        git config user.email "sunilsingh09012@gmail.com"
 
     - name: Deploy to GitHub Pages
       run: |
